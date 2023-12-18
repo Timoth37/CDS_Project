@@ -1,6 +1,5 @@
 import pandas as pd
 from pymongo import MongoClient
-
 # Configuration de la base de données MongoDB
 mongo_uri = "mongodb+srv://TDG:TDG@cluster0.cyiptjg.mongodb.net/?retryWrites=true&w=majority"
 database_name = "CDS"
