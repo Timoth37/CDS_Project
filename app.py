@@ -3,8 +3,9 @@ from dash import dcc, html
 from dash.dependencies import Input, Output
 import math
 import pandas as pd
-import sys
 
+
+import sys
 sys.path.append("layouts")
 # Import les layout
 from overview_layout import generate_overview
