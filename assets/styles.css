@@ -1,0 +1,43 @@
+.body{
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    flex-direction: column;
+}
+
+.main{
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    flex-direction: column;
+}
+
+.page_title{
+    color: whitesmoke;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 20px auto;
+}
+
+.bubble{
+    background-color : #333333;
+    border-radius : 10px;
+    padding: 20px;
+    text-align: center;
+}
+
+.bubble_title{
+    color: whitesmoke;
+    font-size: 16px;
+}
+
+.bubble_text{
+    color: whitesmoke;
+}
+
+.graph_container{
+    width: 80%;
+    margin: auto;
+}
