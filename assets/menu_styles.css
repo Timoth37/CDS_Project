@@ -1,0 +1,60 @@
+.menu{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin: 10px 5px 30px 5px;
+    box-shadow: 0 5px 15px 0 #00000026;
+    background: #1d232c;
+    padding: 10px;
+    align-items: center;
+}
+
+.menu_title{
+    color: #dcdcdc;
+    background: #161b21;
+    padding: 10px;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 10px auto 20px auto;
+    text-align: center;
+}
+
+.menu_button {
+    text-align: center;
+    width: 80%;
+    margin: 30px 10px;
+    color: #9fa0a1;
+    text-decoration: none;
+    font-size: 25px;
+    border: none;
+    background: none;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+  
+.menu_button::before {
+    margin-left: auto;
+        content: '';
+    width: 0%;
+    height: 2px;
+    background: #63318b;
+    display: block;
+    transition: 0.5s;
+}
+  
+.menu_button::after{
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: #63318b;
+    display: block;
+    transition: 0.5s;
+}
+  
+.menu_button:hover::after{
+    width: 100%;
+}
+
+.menu_button:hover::before{
+    width: 100%;
+}

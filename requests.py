@@ -38,15 +38,20 @@ def type_loc_graph():
     # Création de la figure pour dcc.Graph
     figure = {
         'data': [
-            {'x': df_result['_id'], 'y': df_result['count'], 'type': 'bar', 'name': 'Nombre de demandes', 'marker': {'color': '#666666'}}
+            {'x': df_result['_id'], 'y': df_result['count'], 'type': 'bar', 'name': 'Nombre de demandes', 'marker': {'color': '#63318b'}}
         ],
         'layout': {
             'title': "Nombre de transactions en fonction du type de local",
             'xaxis': {'title': 'Type local'},
             'yaxis': {'title': 'Nombre de demandes'},
-            'paper_bgcolor': '#000000',
-            'plot_bgcolor': '#000000',
+            'paper_bgcolor': '#1d232c',
+            'plot_bgcolor': '#1d232c',
+            'font' : {
+                'color' : '#83868b'
+            }
         }
     }
 
-    return html.Div(className="graph_container", children=[dcc.Graph(figure=figure)])
+    return html.Div(className="container", children=[
+        html.H1('Classic', className="page_title"),
+        dcc.Graph(className="graph", figure=figure)])
