@@ -2,3 +2,20 @@
     margin: 20px auto;
     width: 100%;
 }
+
+.Select-control {
+    margin: 10px auto;
+    border: none;
+    background-color: #1d232c !important;
+    color:white;
+  }
+  
+.Select-menu-outer {
+    border: none;
+    background-color: #1d232c;
+    color: white;
+}
+
+.Select-value-label {
+    color: white !important;
+}

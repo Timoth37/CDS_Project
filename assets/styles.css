@@ -20,16 +20,11 @@
     vertical-align: center;
 }
 
-.main{
-    width: 100%;
-    text-align: center;
-}
-
 .page_title{
     color: #dcdcdc;
     font-size: 38px;
     font-weight: 700;
-    margin: -10px auto 0px auto;
+    margin: 4px auto;
     background: #1d232c;
     padding: 5px 0px;
     width: 100%;

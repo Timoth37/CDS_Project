@@ -1,6 +1,16 @@
 from dash import html
+import sys
+sys.path.append("../")
+from requests import global_infos
 
-def generate_overview(meanPrice, maxPrice, meanField, meanLiveable):
+def generate_overview():
+
+    result = global_infos()
+    meanPrice = round(result['mean_value'])
+    maxPrice = round(result['max_value'])
+    meanField = round(result['mean_surface_field'])
+    meanLiveable = round(result['mean_surface_liveable'])
+
     return html.Div(className="container", children=[
         html.H1(children='Overview', className="page_title"),
         html.Div(className="bubble_container", children=[
