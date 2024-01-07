@@ -7,7 +7,7 @@ database_name = "CDS"
 collection_name = "VF"
 
 # Chemin vers le fichier CSV
-csv_file_path = "C:/Users/galla/Downloads/valeursfoncieres-2022.csv"
+csv_file_path = "C:/Users/galla/Downloads/valeursfoncieres-2022.txt"
 
 # Fonction pour le traitement des données
 def preprocess_data(df):
@@ -25,7 +25,7 @@ def preprocess_data(df):
     df['Valeur fonciere'] = df['Valeur fonciere'].str.replace(",", ".").astype(float)
 
     # Supprimer les doublons de propriétés
-    df = df[df['Type local'] != 'DÃ©pendance']
+    df = df[df['Type local'] != 'Dépendance']
     df = df.drop_duplicates(subset=['Date mutation', 'Nature mutation', 'Valeur fonciere', 'Commune', 'Code postal'], keep='first').reset_index(drop=True)
 
     # Traitement sur la colonne Code Commune
@@ -42,7 +42,7 @@ def preprocess_data(df):
 # Fonction pour charger les données depuis le CSV vers MongoDB
 def csv_to_mongodb(csv_file_path, mongo_uri, database_name, collection_name):
     # Charger le CSV dans un DataFrame pandas
-    df = pd.read_csv(csv_file_path, sep=';', on_bad_lines='skip')
+    df = pd.read_csv(csv_file_path, sep='|')
 
     # Appliquer le prétraitement des données
     df = preprocess_data(df)
