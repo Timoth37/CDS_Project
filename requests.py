@@ -1,7 +1,8 @@
 from pymongo import MongoClient
 import pandas as pd
-from dash import dcc, html
-
+import plotly.graph_objects as go
+import plotly.express as px
+import json
 
 mongo_uri = "mongodb+srv://timotheegallais:timotheegallais@securewebdev.ckf4mwz.mongodb.net/?retryWrites=true&w=majority"
 database_name = "CDS"
@@ -21,64 +22,32 @@ def global_infos():
                     "mean_value": {"$avg": "$Valeur fonciere"}, 
                     "max_value": {"$max": "$Valeur fonciere"},
                     "mean_surface_field": {"$avg": "$Surface terrain"},
-                    "mean_surface_liveable": {"$avg": "$Surface reelle bati"}}}
+                    "mean_surface_liveable": {"$avg": "$Surface reelle bati"},
+                    "number_transac" : {"$sum" : 1}}}
     ]
 
     result = list(collection.aggregate(pipeline))
     result = result[0]
     return result if result else None
 
-def type_loc_graph(arg):
+def transac(arg):
+    type = 'linear'
+    yaxis = "Transaction Number"
+
     if arg == 'tbtol':
         pipeline = [
                     {"$group": {"_id": "$Type local", "count": {"$sum": 1}}}
                 ]
 
-        result = list(collection.aggregate(pipeline))
-        df_result = pd.DataFrame(result)
-        df_result = df_result.sort_values(by='count', ascending = False)
-
-
-        figure = {
-            'data': [
-                {'x': df_result['_id'], 'y': df_result['count'], 'type': 'bar', 'name': 'Nombre de demandes', 'marker': {'color': '#63318b'}}
-            ],
-            'layout': {
-                'title': "Nombre de transactions en fonction du type de local",
-                'xaxis': {'title': 'Type local'},
-                'yaxis': {'title': 'Nombre de demandes'},
-                'paper_bgcolor': '#1d232c',
-                'plot_bgcolor': '#1d232c',
-                'font' : {
-                    'color' : '#83868b'
-                }
-            }
-        }
+        xaxis = "Type de local"
+        title = "Nombre de transactions en fonction du type de local"
 
     if arg == 'tbd':
         pipeline = [
                     {"$group": {"_id": "$Code departement", "count": {"$sum": 1}}}
                 ]
-
-        result = list(collection.aggregate(pipeline))
-        df_result = pd.DataFrame(result)
-
-
-        figure = {
-            'data': [
-                {'x': df_result['_id'], 'y': df_result['count'], 'type': 'bar', 'name': 'Nombre de demandes', 'marker': {'color': '#63318b'}}
-            ],
-            'layout': {
-                'title': "Nombre de transactions en fonction du département",
-                'xaxis': {'title': 'Département'},
-                'yaxis': {'title': 'Nombre de demandes'},
-                'paper_bgcolor': '#1d232c',
-                'plot_bgcolor': '#1d232c',
-                'font' : {
-                    'color' : '#83868b'
-                }
-            }
-        }
+        xaxis = "Département"
+        title = "Nombre de transactions en fonction du département"
 
     if arg == 'tbrop':
         pipeline = [
@@ -103,50 +72,163 @@ def type_loc_graph(arg):
             },
             {"$group": {"_id": "$categorie_prix", "count": {"$sum": 1}}}
         ]
-
-        result = list(collection.aggregate(pipeline))
-        df_result = pd.DataFrame(result)
-
-        figure = {
-            'data': [
-                {'x': df_result['_id'], 'y': df_result['count'], 'type': 'bar', 'name': 'Nombre de transactions', 'marker': {'color': '#63318b'}}
-            ],
-            'layout': {
-                'title': "Nombre de transactions en fonction de la Valeur foncière",
-                'xaxis': {'title': 'Catégorie de prix'},
-                'yaxis': {'title': 'Nombre de transactions'},
-                'paper_bgcolor': '#1d232c',
-                'plot_bgcolor': '#1d232c',
-                'font' : {
-                    'color' : '#83868b'
-                }
-            }
-        }
+        xaxis = "Price Range"
+        title = "Nombre de transactions en fonction du prix"
 
     if arg == 'tbnom':
         pipeline = [
                     {"$group": {"_id": "$Nature mutation", "count": {"$sum": 1}}}
                 ]
+        xaxis = "Nature de la mutation"  
+        title = "Nombre de transactions en fonction de la nature de la mutation"
+        type = 'log'
+  
 
-        result = list(collection.aggregate(pipeline))
-        df_result = pd.DataFrame(result)
-        df_result = df_result.sort_values(by='count', ascending = False)
+
+    result = list(collection.aggregate(pipeline))
+    df_result = pd.DataFrame(result)
+    df_result = df_result.sort_values(by='count', ascending=False)
+
+    # Définir les couleurs de l'échelle
+    color_scale = [[0, '#63318b'], [1, '#dcb2ff']]  # Exemple de l'échelle, du vert au rouge
+
+    # Créer le graphique avec Plotly
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=df_result['_id'],
+        y=df_result['count'],
+        marker=dict(color=df_result['count'], colorscale=color_scale, line=dict(color='rgba(0,0,0,0)', width=0)),
+        hoverinfo='y+text',
+        name='Valeur foncière moyenne'
+    ))
+
+    # Mise en page du graphique
+    fig.update_layout(
+        title=title,
+        xaxis=dict(title=xaxis, showgrid= False),
+        yaxis=dict(title=yaxis, showgrid=False, type=type),
+        paper_bgcolor='#1d232c',
+        plot_bgcolor='#1d232c',
+        font=dict(color='#83868b')
+    )
+
+    return fig
+
+def prices(arg, price_per_sqm):
+    if price_per_sqm:
+        column = "prixmcarre bati"
+        yaxis = "Prix m² moyen"
+    else:
+        column = "Valeur fonciere"
+        yaxis = "Valeur foncière moyenne"
+
+    if arg == 'pbtol':
+        pipeline = [
+            {"$match": {column: {"$exists": True, "$ne": float('NaN')}}},
+            {"$group": {"_id": "$Type local", "average_value": {"$avg": "$"+column}}}
+        ]
+        title = yaxis + " en fonction du type de local"
+        xaxis = "Type de local"
+
+    if arg == 'pbd':
+        pipeline = [
+            {"$match": {column: {"$exists": True, "$ne": float('NaN')}}},
+            {"$group": {"_id": "$Code departement", "average_value": {"$avg": "$"+column}}}
+        ]
+        title = yaxis + " en fonction du département"
+        xaxis = "Département"
+
+    if arg == 'pbnom':
+        pipeline = [
+            {"$match": {column: {"$exists": True, "$ne": float('NaN')}}},
+            {"$group": {"_id": "$Nature mutation", "average_value": {"$avg": "$"+column}}}
+        ]
+        title = yaxis + " en fonction de la nature de la mutation"
+        xaxis = "Nature de la mutation"
+
+    if arg == 'pbtos':
+        pipeline = [
+            {"$match": {column: {"$exists": True, "$ne": float('NaN')},
+                        "Type de voie": {"$in": ['RUE', 'BD', 'AV', 'RTE', 'CHE']}}},
+            {"$group": {"_id": "$Type de voie", "average_value": {"$avg": "$"+column}}}
+        ]
+        title = yaxis + " en fonction du type de voie"
+        xaxis = "Type de voie"
+
+    result = list(collection.aggregate(pipeline))
+    df_result = pd.DataFrame(result)
+    df_result = df_result.sort_values(by='average_value', ascending=False)
+
+    # Définir les couleurs de l'échelle
+    color_scale = [[0, '#63318b'], [1, '#dcb2ff']]  # Exemple de l'échelle, du vert au rouge
+
+    # Créer le graphique avec Plotly
+    fig = go.Figure()
+
+    fig.add_trace(go.Bar(
+        x=df_result['_id'],
+        y=df_result['average_value'],
+        marker=dict(color=df_result['average_value'], colorscale=color_scale, line=dict(color='rgba(0,0,0,0)', width=0)),
+        hoverinfo='y+text',
+        name='Valeur foncière moyenne'
+    ))
+
+    # Mise en page du graphique
+    fig.update_layout(
+        title=title,
+        xaxis=dict(title=xaxis, showgrid= False),
+        yaxis=dict(title=yaxis, showgrid=False),
+        paper_bgcolor='#1d232c',
+        plot_bgcolor='#1d232c',
+        font=dict(color='#83868b')
+    )
 
 
-        figure = {
-            'data': [
-                {'x': df_result['_id'], 'y': df_result['count'], 'type': 'bar', 'name': 'Nombre de demandes', 'marker': {'color': '#63318b'}}
-            ],
-            'layout': {
-                'title': "Nombre de transactions en fonction de la nature de la mutation (log)",
-                'xaxis': {'title': 'Nature de la mutation'},
-                'yaxis': {'title': 'Nombre de demandes', 'type': 'log'},
-                'paper_bgcolor': '#1d232c',
-                'plot_bgcolor': '#1d232c',
-                'font' : {
-                    'color' : '#83868b'
-                }
-            }
-        }     
 
-    return figure
+    return fig
+
+def maps(arg):
+
+    geo = json.load(open('C:/Users/galla/Desktop/A5/CDS/Project/assets/depart.geojson'))
+
+
+    if arg == 'price':
+        pipeline = [
+            {"$match": {"Valeur fonciere": {"$exists": True, "$ne": float('NaN')}}},
+            {"$group": {"_id": "$Code departement", "average_value": {"$avg": "$Valeur fonciere"}}}
+        ]
+
+    if arg == 'smprice':
+        pipeline = [
+            {"$match": {"prixmcarre bati": {"$exists": True, "$ne": float('NaN')}}},
+            {"$group": {"_id": "$Code departement", "average_value": {"$avg": "$prixmcarre bati"}}}
+        ]
+
+    result = list(collection.aggregate(pipeline))
+    df_result = pd.DataFrame(result)
+    fig = px.choropleth(df_result,
+                    geojson=geo,
+                    title ="Valeur foncière moyenne",
+                    locations='_id',
+                    featureidkey='properties.code',
+                    color='average_value',
+                    color_continuous_scale="magma",
+                    range_color=(0, 600000),
+                    scope="europe",
+                    labels={'average_value': 'Valeur fonciere moyenne'})
+    fig.update_geos(fitbounds="locations", visible=False)
+    fig.update_layout(
+        paper_bgcolor='#1d232c',
+        plot_bgcolor='#1d232c',
+        geo=dict(bgcolor='#1d232c'), 
+        margin=dict(
+            l=0,  # Marge à gauche
+            r=0,  # Marge à droite
+            t=0,  # Marge en haut
+            b=0   # Marge en bas
+        ),
+        font=dict(color='#83868b')
+    )
+
+    return fig
