@@ -19,10 +19,10 @@ app.layout = html.Div(className="body", children=[
     html.Div(className="menu", children=[
         html.H3('Real Estate in France 2022', className="menu_title"),
         dcc.Link('Overview', className="menu_button", href='/overview'),
-        dcc.Link('Transactions Stats', className="menu_button", href='/transac'),
-        dcc.Link('Maps Stats', className="menu_button", href='/maps'),
-        dcc.Link('Prices Stats', className="menu_button", href='/prices'),
-        dcc.Link('Test', className="menu_button", href='/test2'),
+        dcc.Link('Transactions', className="menu_button", href='/transac'),
+        dcc.Link('Prices', className="menu_button", href='/prices'),
+        dcc.Link('Maps', className="menu_button", href='/maps'),
+        dcc.Link('Correlation', className="menu_button", href='/correlation'),
         dcc.Link('About', className="menu_button", href='/about'),
     ]),
 

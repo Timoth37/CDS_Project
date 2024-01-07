@@ -18,13 +18,15 @@ def preprocess_data(df):
                         'Nombre pieces principales', 'Surface terrain']
     df = df[columns_to_keep]
 
-    # Convertir la colonne 'Date mutation' en datetime
+    # Convertir la colonne 'Date mutation' en datetime et Valeur fonciere en float et Type Local en string
     df['Date mutation'] = pd.to_datetime(df['Date mutation'], format="%d/%m/%Y", errors='coerce')
-
-    # Adapter le type des colonnes et remplacer les virgules par des points dans 'Valeur fonciere'
-    df['Valeur fonciere'] = df['Valeur fonciere'].str.replace(",", ".").astype(float)
+    df['Valeur fonciere'] = df['Valeur fonciere'].apply(lambda x: str(x).replace(',','.'))
+    df['Valeur fonciere']=df['Valeur fonciere'].astype(float)
+    
+    df['Type local'] = df['Type local'].astype(str)
 
     # Supprimer les doublons de propriétés
+    df = df[df['Type local'] != str('nan')]
     df = df[df['Type local'] != 'Dépendance']
     df = df.drop_duplicates(subset=['Date mutation', 'Nature mutation', 'Valeur fonciere', 'Commune', 'Code postal'], keep='first').reset_index(drop=True)
 
@@ -48,7 +50,7 @@ def csv_to_mongodb(csv_file_path, mongo_uri, database_name, collection_name):
     df = preprocess_data(df)
 
     # Connexion à la base de données MongoDB
-    client = MongoClient(mongo_uri)
+    '''client = MongoClient(mongo_uri)
 
     db = client[database_name]
     collection = db[collection_name]
@@ -60,7 +62,7 @@ def csv_to_mongodb(csv_file_path, mongo_uri, database_name, collection_name):
     collection.insert_many(data)
 
     # Fermer la connexion MongoDB
-    client.close()
+    client.close()'''
 
 # Appeler la fonction avec les paramètres appropriés
 csv_to_mongodb(csv_file_path, mongo_uri, database_name, collection_name)

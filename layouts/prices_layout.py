@@ -26,7 +26,14 @@ def generate_prices():
                 value='fp',
                 inline=True)
             ]),
-        dcc.Graph(id='prices_graph', className="graph", figure=prices('pbtol', False))])
+            dcc.Loading(
+                dcc.Graph(id='prices_graph', className="graph", figure=prices('pbtol', False)),
+                parent_className="graph",
+                type="dot",
+                style={'width': '100%', 'margin': '20px auto'},
+                color = '#dcdcdc',
+                id='map_loading',  # Add an ID to the Loading component
+            )])
 
 @callback(
     Output('prices_graph', 'figure'),

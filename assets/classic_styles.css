@@ -1,7 +1,27 @@
+.map_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0px;
+    padding: 0px;
+
+}
+
 .graph{
     margin: 20px auto;
     width: 100%;
 }
+
+/*#page-content > div > div.map_container > div:nth-child(2){
+    margin: 20px auto;
+    width: 48%;
+}*/
+
+.map_graph{
+    margin: 20px auto;
+    width: 48%;
+}
+
 
 .choices_container{
     display: flex;
@@ -59,7 +79,7 @@ input[type='radio']{
 
 input[type='radio']:hover{
     cursor: pointer;
-    border: 1px solid #dcdcdc;
+    border: 1px solid rgb(220, 220, 220);
     background: #dcdcdc;
 }
 
