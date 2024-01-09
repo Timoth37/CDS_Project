@@ -1,0 +1,95 @@
+.filters_container{
+  display: flex;
+  flex-direction: column;
+}
+
+.filters_dropdown{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.filters_dropdown > div{
+  width: 22%;
+  margin: 10px 0;
+}
+
+.rangeslider{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.rangeslider > h3{
+  font-size: 14px;
+  margin: 6px 0;
+  color: white;
+  height: fit-content;
+  width: 15%;
+  text-align: left;
+}
+
+.rangeslider > div{
+  margin: 10px 0;
+  width: 65%;
+}
+
+.rangeslider > p{
+  font-size: 14px;
+  height: fit-content;
+  background: #1d232c;
+  border-radius: 5px;
+  margin: 6px 10px;
+  padding: 5px;
+  color: white;
+}
+
+.rc-slider-track{
+  color: #63318b;
+  background: #63318b;
+}
+
+.rc-slider-handle{
+  border: 3px solid #63318b;
+}
+
+.rc-slider-handle:hover{
+  border: 3px solid #63318b;
+}
+
+.rc-slider-handle:active{
+  border: 3px solid #63318b;
+}
+
+.button_container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0px 0px 0px 30px;
+}
+
+.button{
+  background: transparent;
+  padding: 4px 0;
+  border: 3px solid #63318b;
+  border-radius: 5px;
+  color: #dcdcdc;
+  width: 20%;
+  align-self: right;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button:not(:disabled):hover{
+  background: #1d232c;
+  box-shadow: 0px 0px 10px 2px rgba(99,49,139,0.8);
+  cursor: pointer;
+}
+
+.button:not(:disabled):active{
+  background: #63318b;
+  color: #1d232c;
+}
+
+.button:disabled{
+  opacity: 0.3;
+}

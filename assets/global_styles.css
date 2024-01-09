@@ -1,0 +1,89 @@
+.map_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0px;
+    padding: 0px;
+
+}
+
+.graph{
+    margin: 20px auto;
+    width: 100%;
+}
+
+.map_graph{
+    margin: 20px auto;
+    width: 48%;
+}
+
+
+.choices_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#prices_dropdown{
+    width: 60%;
+}
+
+.Select-control{
+    margin: 10px auto;
+    border: none;
+    background-color: #1d232c !important;
+    color:white;
+  }
+  
+.Select-menu-outer {
+    border: none;
+    background-color: #1d232c !important;
+    color: white;
+}
+
+.Select-value-label {
+    color: white !important;
+}
+
+#price_per_sqm_checkbox{
+    margin-top: 0px;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;
+}
+
+#price_per_sqm_checkbox label{
+    display: flex !important;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0px 30px;
+}
+
+input[type='radio']{
+    margin: 0px 10px !important;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    border: 2px solid #dcdcdc;
+    transition: background 0.3s ease;
+}
+
+input[type='radio']:hover{
+    cursor: pointer;
+    border: 1px solid rgb(220, 220, 220);
+    background: #dcdcdc;
+}
+
+input[type='radio']:checked{
+    margin: 0px 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background: #63318b;
+}

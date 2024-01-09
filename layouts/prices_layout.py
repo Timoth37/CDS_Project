@@ -7,21 +7,22 @@ from requests import prices
 
 def generate_prices():
     return html.Div(className="container", children=[
-        html.H1('Prices Statistics', className="page_title"),
+        html.H1('Prix', className="page_title"),
         html.Div(className="choices_container", children=[dcc.Dropdown(id='prices_dropdown', className="dropdown",
             options=[
-                {'label': 'By type of local', 'value': 'pbtol'},
-                {'label': 'By department', 'value': 'pbd'},
-                {'label': 'By nature of mutation', 'value': 'pbnom'},
-                {'label': 'By type of street', 'value': 'pbtos'}
+                {'label': 'Par type de local', 'value': 'pbtol'},
+                {'label': 'Par département', 'value': 'pbd'},
+                {'label': 'Par nature de mutation', 'value': 'pbnom'},
+                {'label': 'Par type de voie', 'value': 'pbtos'},
+                {'label': 'Par nombre de pièces', 'value' : 'pbnor'}
             ],
             value='pbtol'),
             dcc.RadioItems(
                 id='price_per_sqm_checkbox',
                 className="checkbox",
                 options = [
-                    {'label': 'Full Price', 'value': 'fp'},
-                    {'label': 'Square Meter Price', 'value': 'smp'}
+                    {'label': 'Valeur foncière', 'value': 'fp'},
+                    {'label': 'Prix au m²', 'value': 'smp'}
                 ],
                 value='fp',
                 inline=True)

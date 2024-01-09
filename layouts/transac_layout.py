@@ -7,13 +7,13 @@ from requests import transac
 
 def generate_transac():
     return html.Div(className="container", children=[
-        html.H1('Transactions Statistics', className="page_title"),
+        html.H1('Volumes', className="page_title"),
         dcc.Dropdown(id='transac_dropdown', className="dropdown",
             options=[
-                {'label': 'By type of local', 'value': 'tbtol'},
-                {'label': 'By department', 'value': 'tbd'},
-                {'label': 'By range of price', 'value': 'tbrop'},
-                {'label': 'By nature of mutation', 'value': 'tbnom'}
+                {'label': 'Par type de local', 'value': 'tbtol'},
+                {'label': 'Par département', 'value': 'tbd'},
+                {'label': 'Par niveaux de prix', 'value': 'tbrop'},
+                {'label': 'Par type de mutation', 'value': 'tbnom'}
             ],
             value='tbtol'),  
             dcc.Loading(

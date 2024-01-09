@@ -10,6 +10,8 @@
 }
 
 .menu_title{
+    text-decoration: none !important;
+    border: none;
     color: #dcdcdc;
     background: #161b21;
     padding: 10px;
@@ -17,6 +19,10 @@
     font-weight: 700;
     margin: 10px auto 20px auto;
     text-align: center;
+}
+  
+.home_button{
+    text-decoration: none;
 }
 
 .menu_button {
@@ -32,23 +38,8 @@
     font-family: 'Poppins', sans-serif;
 }
   
-.menu_button::before {
-    margin-left: auto;
-        content: '';
-    width: 0%;
-    height: 2px;
-    background: #63318b;
-    display: block;
-    transition: 0.5s;
-}
-  
-.menu_button::after{
-    content: '';
-    width: 0%;
-    height: 2px;
-    background: #63318b;
-    display: block;
-    transition: 0.5s;
+.menu_button:hover{
+    color: rgba(99, 49, 139, 0.4)
 }
   
 .menu_button:hover::after{

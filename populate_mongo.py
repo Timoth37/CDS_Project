@@ -2,12 +2,12 @@ import pandas as pd
 from pymongo import MongoClient
 
 # Configuration de la base de données MongoDB
-mongo_uri = "mongodb+srv://timotheegallais:timotheegallais@securewebdev.ckf4mwz.mongodb.net/?retryWrites=true&w=majority"
+mongo_uri = "mongodb://localhost:27017"
 database_name = "CDS"
 collection_name = "VF"
 
 # Chemin vers le fichier CSV
-csv_file_path = "C:/Users/galla/Downloads/valeursfoncieres-2022.txt"
+csv_file_path = "C:/Users/galla/Downloads/valeursfoncieres-2021.txt"
 
 # Fonction pour le traitement des données
 def preprocess_data(df):
@@ -50,7 +50,7 @@ def csv_to_mongodb(csv_file_path, mongo_uri, database_name, collection_name):
     df = preprocess_data(df)
 
     # Connexion à la base de données MongoDB
-    '''client = MongoClient(mongo_uri)
+    client = MongoClient(mongo_uri)
 
     db = client[database_name]
     collection = db[collection_name]
@@ -62,7 +62,7 @@ def csv_to_mongodb(csv_file_path, mongo_uri, database_name, collection_name):
     collection.insert_many(data)
 
     # Fermer la connexion MongoDB
-    client.close()'''
+    client.close()
 
 # Appeler la fonction avec les paramètres appropriés
 csv_to_mongodb(csv_file_path, mongo_uri, database_name, collection_name)

@@ -1,25 +1,34 @@
 from dash import dcc, html
 from dash.dependencies import Input, Output
-from dash import callback
+from dash import callback, callback_context, no_update
 import sys
 sys.path.append("../")
 from requests import maps
 
+currentDropdown = 'price'
+currentDepart = '75'
 
 def generate_maps():
     return html.Div(className="container", children=[
-        html.H1('Maps Statistics', className="page_title"),
+        html.H1('L\'immobilier en carte', className="page_title"),
         dcc.Dropdown(id='maps_dropdown', className="dropdown",
             options=[
-                {'label': 'Price', 'value': 'price'},
-                {'label': 'Meter Square Price', 'value': 'smprice'},
-                {'label': 'Liveable Surface', 'value': 'surfliveable'},
+                {'label': 'Valeur foncière', 'value': 'price'},
+                {'label': 'Prix au m²', 'value': 'smprice'},
+                {'label': 'Surface habitable', 'value': 'surfliveable'},
             ],
             value='price'),
         html.Div(className="map_container", children=[
-            dcc.Graph(id='france_map', className="map_graph", figure=maps('price', '00')),
             dcc.Loading(
-                dcc.Graph(id='depart_map', figure=maps('price', '75')),
+                dcc.Graph(id='france_map', figure=maps(currentDropdown, '00')),
+                parent_className="map_graph",
+                type="dot",
+                style={'width': '100%', 'margin': '20px auto'},
+                color = '#dcdcdc',
+                id='map_loading',  # Add an ID to the Loading component
+            ),
+            dcc.Loading(
+                dcc.Graph(id='depart_map', figure=maps(currentDropdown, currentDepart)),
                 parent_className="map_graph",
                 type="dot",
                 style={'width': '100%', 'margin': '20px auto'},
@@ -35,11 +44,17 @@ def generate_maps():
      Input('france_map', 'clickData')]
 )
 def update_graph(selected_value, click_data):
-    main_map = maps(selected_value, "00")
-    detailed_map = maps(selected_value, "75")
-    
-    if click_data:
-        department_code = click_data['points'][0]['location']
-        detailed_map = maps(selected_value, department_code)
-
-    return main_map, detailed_map
+    global currentDepart
+    global currentDropdown
+    ctx = callback_context
+    if ctx.triggered_id == 'maps_dropdown':
+        currentDropdown = selected_value
+        main_map = maps(currentDropdown, '00')
+        detailed_map = maps(currentDropdown, currentDepart)
+        return main_map, detailed_map
+    elif ctx.triggered_id == 'france_map':
+        currentDepart = click_data['points'][0]['location']
+        detailed_map = maps(currentDropdown, currentDepart)
+        return no_update, detailed_map
+    else:
+        return no_update, no_update
