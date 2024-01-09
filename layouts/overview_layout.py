@@ -39,11 +39,11 @@ def generate_overview():
         ]),
         html.Div(className="bubble_container", children=[
             html.Div(className= "bubble", children=[
-                html.H3('Nombre de demandes', className="bubble_title"),
-                html.P(f"{number_transac:,}  €".replace(',','  '), className="bubble_text")
+                html.H3('Nombre de mutations', className="bubble_title"),
+                html.P(f"{number_transac:,}".replace(',','  '), className="bubble_text")
             ]),
             html.Div(className="bubble", children=[
-                html.H3('Type de bien le plus représenté', className="bubble_title"),
+                html.H3('Type de bien majoritaire', className="bubble_title"),
                 html.P(f"{main_local}".replace(',','  '), className="bubble_text")
             ]),
             html.Div(className="bubble", children=[

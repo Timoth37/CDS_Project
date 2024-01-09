@@ -18,7 +18,7 @@ def populate_VF(file_path, mongo_uri, database_name, collection_name):
     data = df.to_dict(orient='records')
 
     collection.insert_many(data)
-
+    create_indexes(collection, ['Valeur fonciere', 'Surface reelle bati', 'Nombre pieces principales','prixmcarre bati'])
     client.close()
 #populate_VF("C:/Users/galla/Downloads/valeursfoncieres-2021.txt", mongo_uri, database_name, 'VF')
 
@@ -31,7 +31,7 @@ def populate_COMMUNES(file_path, mongo_uri, database_name, collection_name):
         collection = db[collection_name]
         
         collection.insert_many(data)
-        
+        create_indexes(collection, ['codgeo', 'dep'])
         client.close()
 #populate_DEPART("C:/Users/galla/Desktop/A5/CDS/Project/datas/json/france.json", mongo_uri, database_name, 'COMMUNES')
 
@@ -150,7 +150,17 @@ def populate_GEO(departList, mongo_uri, database_name, collection_name):
             data=json.load(file)
             data['depart_id'] = i
             collection.insert_one(data)
+
+    create_indexes(collection,['depart_id'])
 #populate_GEO(departList, mongo_uri, database_name, 'GEO')
+
+
+def create_indexes(collection, list_attribute):
+    for i in list_attribute:
+        collection.create_index([(i, 1)])
+
+
+
 
 
 def preprocess_data(df):

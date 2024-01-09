@@ -111,9 +111,9 @@ def full_search(type, rooms, depart, commune, price, surface):
     if surface[1] is not None:
         surface_filter["$lte"] = surface[1]
     if surface_filter:
-        pipeline.append({"$match": {"prixmcarre bati": surface_filter}})
+        pipeline.append({"$match": {"Surface reelle bati": surface_filter}})
 
-    pipeline.append({"$sample": {"size": 50}})
+    #pipeline.append({"$sample": {"size": 50}})
     pipeline.append({"$project": {
         "Département": "$Code departement",
         "Code Commune" : "$Code commune total",
@@ -122,8 +122,7 @@ def full_search(type, rooms, depart, commune, price, surface):
         "Valeur": "$Valeur fonciere",
         "Surface bati": "$Surface reelle bati",
         "_id": 0
-    }})
-    
+    }})    
     result = list(collection.aggregate(pipeline))
     data = pd.DataFrame(result)
     if not data.empty:
@@ -322,7 +321,7 @@ def correlation(arg):
         price = pd.DataFrame(result)
         merged_df = pd.merge(price, pop, left_on='_id', right_on="Code departement", how='inner')
         merged_df = merged_df.sort_values(by='Population', ascending=False)    
-        return scatter_plot("Prix du m² en fonction de la démographie, par département",merged_df, 'Code departement', 'Prix m² habitable', 'Population')
+        return scatter_plot("Prix du m² habitable en fonction de la démographie et du département",merged_df, 'Code departement', 'Prix m² habitable', 'Population')
 
     if arg == 'surface':
             pop = pd.DataFrame(json.load(open('C:/Users/galla/Desktop/A5/CDS/Project/datas/json/pop.json', encoding='utf-8')))
@@ -334,8 +333,7 @@ def correlation(arg):
             price = pd.DataFrame(result)
             merged_df = pd.merge(price, pop, left_on='_id', right_on="Code departement", how='inner')
             merged_df = merged_df.sort_values(by='Population', ascending=False) 
-            return scatter_3d_plot("Surface habitable en fonction de la démographie, par département",merged_df, 'Code departement', 'Surface habitable', 'Population')
-
+            return scatter_3d_plot("Surface habitable en m² en fonction de la démographie et du département",merged_df, 'Code departement', 'Surface habitable', 'Population')
 
 def bar_chart(title, pipeline, xAxis, yAxis, xLabel, yLabel, type):
     color_scale = [[0, '#63318b'], [1, '#e4c3ff']] 

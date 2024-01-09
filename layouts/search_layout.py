@@ -273,7 +273,7 @@ def btn_click(n_clicks, type, rooms, depart, commune, price, surface):
     if type==None and rooms==None and depart==None and commune==None and price == [None, None] and surface == [None, None] : 
         return [], [{"name": i, "id": i} for i in []]
     
-    datatable = full_search(type, rooms, depart, commune, [10**i if i is not None else None for i in price], [10**j if j is not None else None for j in surface])
+    datatable = full_search(type, rooms, depart, commune, [round(10**i) if i is not None else None for i in price], [round(10**j) if j is not None else None for j in surface])
     if datatable.empty:
         return [], [{"name": i, "id": i} for i in []]
     return datatable.to_dict('records'), [{"name": i, "id": i} for i in datatable.columns]
