@@ -25,7 +25,7 @@ def generate_maps():
                 type="dot",
                 style={'width': '100%', 'margin': '20px auto'},
                 color = '#dcdcdc',
-                id='map_loading',  # Add an ID to the Loading component
+                id='map_loading'
             ),
             dcc.Loading(
                 dcc.Graph(id='depart_map', figure=maps(currentDropdown, currentDepart)),
@@ -33,28 +33,34 @@ def generate_maps():
                 type="dot",
                 style={'width': '100%', 'margin': '20px auto'},
                 color = '#dcdcdc',
-                id='depart_map_loading',  # Add an ID to the Loading component
+                id='depart_map_loading'
             )])
         ])
 
 @callback(
-    [Output('france_map', 'figure'),
-     Output('depart_map', 'figure')],
-    [Input('maps_dropdown', 'value'),
-     Input('france_map', 'clickData')]
+    Output('depart_map', 'figure'),
+    Input('france_map', 'clickData'),
+    prevent_initial_call=True
 )
-def update_graph(selected_value, click_data):
+def update_graph(click_data):
     global currentDepart
     global currentDropdown
-    ctx = callback_context
-    if ctx.triggered_id == 'maps_dropdown':
-        currentDropdown = selected_value
-        main_map = maps(currentDropdown, '00')
-        detailed_map = maps(currentDropdown, currentDepart)
-        return main_map, detailed_map
-    elif ctx.triggered_id == 'france_map':
-        currentDepart = click_data['points'][0]['location']
-        detailed_map = maps(currentDropdown, currentDepart)
-        return no_update, detailed_map
-    else:
-        return no_update, no_update
+    currentDepart = click_data['points'][0]['location']
+    detailed_map = maps(currentDropdown, currentDepart)
+    return detailed_map
+    
+@callback(
+    Output('france_map', 'figure'),
+    Output('detailed_map', 'figure'),
+    Input('maps_dropdown', 'value'),
+    prevent_initial_call=True
+)
+def update_graph_depart(selected_value):
+    global currentDepart
+    global currentDropdown
+    currentDropdown = selected_value
+    main_map = maps(currentDropdown, '00')
+    detailed_map = maps(currentDropdown, currentDepart)
+    return main_map, detailed_map
+
+

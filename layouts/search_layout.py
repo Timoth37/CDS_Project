@@ -216,7 +216,7 @@ def generate_search():
                     type="dot",
                     style={'width': '100%', 'margin': '20px auto'},
                     color = '#dcdcdc',
-                    id='map_loading', 
+                    id='search_loading', 
                 )
             ])
         ])
