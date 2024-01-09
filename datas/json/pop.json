@@ -1,0 +1,507 @@
+[
+  {
+    "Code departement": "11",
+    "departement": "Aude",
+    "Population": 370245
+  },
+  {
+    "Code departement": "25",
+    "departement": "Doubs",
+    "Population": 540890
+  },
+  {
+    "Code departement": "60",
+    "departement": "Oise",
+    "Population": 829839
+  },
+  {
+    "Code departement": "66",
+    "departement": "Pyr\u00e9n\u00e9es-Orientales",
+    "Population": 482131
+  },
+  {
+    "Code departement": "85",
+    "departement": "Vend\u00e9e",
+    "Population": 680191
+  },
+  {
+    "Code departement": "21",
+    "departement": "C\u00f4te-d'Or",
+    "Population": 536837
+  },
+  {
+    "Code departement": "22",
+    "departement": "C\u00f4tes-d'Armor",
+    "Population": 598715
+  },
+  {
+    "Code departement": "41",
+    "departement": "Loir-et-Cher",
+    "Population": 332601
+  },
+  {
+    "Code departement": "51",
+    "departement": "Marne",
+    "Population": 573253
+  },
+  {
+    "Code departement": "65",
+    "departement": "Hautes-Pyr\u00e9n\u00e9es",
+    "Population": 227492
+  },
+  {
+    "Code departement": "45",
+    "departement": "Loiret",
+    "Population": 681497
+  },
+  {
+    "Code departement": "73",
+    "departement": "Savoie",
+    "Population": 433755
+  },
+  {
+    "Code departement": "78",
+    "departement": "Yvelines",
+    "Population": 1438440
+  },
+  {
+    "Code departement": "87",
+    "departement": "Haute-Vienne",
+    "Population": 374158
+  },
+  {
+    "Code departement": "91",
+    "departement": "Essonne",
+    "Population": 1313729
+  },
+  {
+    "Code departement": "18",
+    "departement": "Cher",
+    "Population": 304794
+  },
+  {
+    "Code departement": "54",
+    "departement": "Meurthe-et-Moselle",
+    "Population": 733085
+  },
+  {
+    "Code departement": "86",
+    "departement": "Vienne",
+    "Population": 438136
+  },
+  {
+    "Code departement": "19",
+    "departement": "Corr\u00e8ze",
+    "Population": 241891
+  },
+  {
+    "Code departement": "10",
+    "departement": "Aube",
+    "Population": 311623
+  },
+  {
+    "Code departement": "70",
+    "departement": "Haute-Sa\u00f4ne",
+    "Population": 234316
+  },
+  {
+    "Code departement": "24",
+    "departement": "Dordogne",
+    "Population": 412629
+  },
+  {
+    "Code departement": "32",
+    "departement": "Gers",
+    "Population": 191332
+  },
+  {
+    "Code departement": "57",
+    "departement": "Moselle",
+    "Population": 1038558
+  },
+  {
+    "Code departement": "75",
+    "departement": "Paris",
+    "Population": 2168462
+  },
+  {
+    "Code departement": "77",
+    "departement": "Seine-et-Marne",
+    "Population": 1422736
+  },
+  {
+    "Code departement": "44",
+    "departement": "Loire-Atlantique",
+    "Population": 1413341
+  },
+  {
+    "Code departement": "64",
+    "departement": "Pyr\u00e9n\u00e9es-Atlantiques",
+    "Population": 677189
+  },
+  {
+    "Code departement": "973",
+    "departement": "Guyane",
+    "Population": 281612
+  },
+  {
+    "Code departement": "05",
+    "departement": "Hautes-Alpes",
+    "Population": 141576
+  },
+  {
+    "Code departement": "28",
+    "departement": "Eure-et-Loir",
+    "Population": 433983
+  },
+  {
+    "Code departement": "36",
+    "departement": "Indre",
+    "Population": 218508
+  },
+  {
+    "Code departement": "49",
+    "departement": "Maine-et-Loire",
+    "Population": 820655
+  },
+  {
+    "Code departement": "974",
+    "departement": "La R\u00e9union",
+    "Population": 865826
+  },
+  {
+    "Code departement": "15",
+    "departement": "Cantal",
+    "Population": 144240
+  },
+  {
+    "Code departement": "2B",
+    "departement": "Haute-Corse",
+    "Population": 177902
+  },
+  {
+    "Code departement": "35",
+    "departement": "Ille-et-Vilaine",
+    "Population": 1073883
+  },
+  {
+    "Code departement": "53",
+    "departement": "Mayenne",
+    "Population": 306323
+  },
+  {
+    "Code departement": "82",
+    "departement": "Tarn-et-Garonne",
+    "Population": 262582
+  },
+  {
+    "Code departement": "92",
+    "departement": "Hauts-de-Seine",
+    "Population": 1612788
+  },
+  {
+    "Code departement": "62",
+    "departement": "Pas-de-Calais",
+    "Population": 1475142
+  },
+  {
+    "Code departement": "76",
+    "departement": "Seine-Maritime",
+    "Population": 1257009
+  },
+  {
+    "Code departement": "04",
+    "departement": "Alpes-de-Haute-Provence",
+    "Population": 161664
+  },
+  {
+    "Code departement": "2A",
+    "departement": "Corse-du-Sud",
+    "Population": 159894
+  },
+  {
+    "Code departement": "29",
+    "departement": "Finist\u00e8re",
+    "Population": 910502
+  },
+  {
+    "Code departement": "40",
+    "departement": "Landes",
+    "Population": 411757
+  },
+  {
+    "Code departement": "59",
+    "departement": "Nord",
+    "Population": 2613874
+  },
+  {
+    "Code departement": "81",
+    "departement": "Tarn",
+    "Population": 392407
+  },
+  {
+    "Code departement": "17",
+    "departement": "Charente-Maritime",
+    "Population": 648183
+  },
+  {
+    "Code departement": "26",
+    "departement": "Dr\u00f4me",
+    "Population": 516172
+  },
+  {
+    "Code departement": "63",
+    "departement": "Puy-de-D\u00f4me",
+    "Population": 655185
+  },
+  {
+    "Code departement": "74",
+    "departement": "Haute-Savoie",
+    "Population": 829668
+  },
+  {
+    "Code departement": "33",
+    "departement": "Gironde",
+    "Population": 1610829
+  },
+  {
+    "Code departement": "37",
+    "departement": "Indre-et-Loire",
+    "Population": 611139
+  },
+  {
+    "Code departement": "42",
+    "departement": "Loire",
+    "Population": 762495
+  },
+  {
+    "Code departement": "56",
+    "departement": "Morbihan",
+    "Population": 753543
+  },
+  {
+    "Code departement": "67",
+    "departement": "Bas-Rhin",
+    "Population": 1125279
+  },
+  {
+    "Code departement": "71",
+    "departement": "Sa\u00f4ne-et-Loire",
+    "Population": 553129
+  },
+  {
+    "Code departement": "01",
+    "departement": "Ain",
+    "Population": 649654
+  },
+  {
+    "Code departement": "07",
+    "departement": "Ard\u00e8che",
+    "Population": 328557
+  },
+  {
+    "Code departement": "34",
+    "departement": "H\u00e9rault",
+    "Population": 1160043
+  },
+  {
+    "Code departement": "68",
+    "departement": "Haut-Rhin",
+    "Population": 767606
+  },
+  {
+    "Code departement": "94",
+    "departement": "Val-de-Marne",
+    "Population": 1401228
+  },
+  {
+    "Code departement": "06",
+    "departement": "Alpes-Maritimes",
+    "Population": 1080614
+  },
+  {
+    "Code departement": "27",
+    "departement": "Eure",
+    "Population": 610152
+  },
+  {
+    "Code departement": "976",
+    "departement": "Mayotte",
+    "Population": 259154
+  },
+  {
+    "Code departement": "09",
+    "departement": "Ari\u00e8ge",
+    "Population": 152321
+  },
+  {
+    "Code departement": "14",
+    "departement": "Calvados",
+    "Population": 695818
+  },
+  {
+    "Code departement": "39",
+    "departement": "Jura",
+    "Population": 259393
+  },
+  {
+    "Code departement": "48",
+    "departement": "Loz\u00e8re",
+    "Population": 75463
+  },
+  {
+    "Code departement": "972",
+    "departement": "Martinique",
+    "Population": 371246
+  },
+  {
+    "Code departement": "03",
+    "departement": "Allier",
+    "Population": 338978
+  },
+  {
+    "Code departement": "79",
+    "departement": "Deux-S\u00e8vres",
+    "Population": 375652
+  },
+  {
+    "Code departement": "02",
+    "departement": "Aisne",
+    "Population": 534286
+  },
+  {
+    "Code departement": "47",
+    "departement": "Lot-et-Garonne",
+    "Population": 333230
+  },
+  {
+    "Code departement": "88",
+    "departement": "Vosges",
+    "Population": 364873
+  },
+  {
+    "Code departement": "93",
+    "departement": "Seine-Saint-Denis",
+    "Population": 1646105
+  },
+  {
+    "Code departement": "12",
+    "departement": "Aveyron",
+    "Population": 281082
+  },
+  {
+    "Code departement": "52",
+    "departement": "Haute-Marne",
+    "Population": 175102
+  },
+  {
+    "Code departement": "69",
+    "departement": "Rh\u00f4ne",
+    "Population": 1878095
+  },
+  {
+    "Code departement": "84",
+    "departement": "Vaucluse",
+    "Population": 566096
+  },
+  {
+    "Code departement": "38",
+    "departement": "Is\u00e8re",
+    "Population": 1272816
+  },
+  {
+    "Code departement": "55",
+    "departement": "Meuse",
+    "Population": 187372
+  },
+  {
+    "Code departement": "95",
+    "departement": "Val-d'Oise",
+    "Population": 1242746
+  },
+  {
+    "Code departement": "971",
+    "departement": "Guadeloupe",
+    "Population": 390704
+  },
+  {
+    "Code departement": "08",
+    "departement": "Ardennes",
+    "Population": 271339
+  },
+  {
+    "Code departement": "16",
+    "departement": "Charente",
+    "Population": 351971
+  },
+  {
+    "Code departement": "50",
+    "departement": "Manche",
+    "Population": 496972
+  },
+  {
+    "Code departement": "58",
+    "departement": "Ni\u00e8vre",
+    "Population": 205942
+  },
+  {
+    "Code departement": "80",
+    "departement": "Somme",
+    "Population": 570195
+  },
+  {
+    "Code departement": "61",
+    "departement": "Orne",
+    "Population": 282516
+  },
+  {
+    "Code departement": "13",
+    "departement": "Bouches-du-Rh\u00f4ne",
+    "Population": 2043941
+  },
+  {
+    "Code departement": "23",
+    "departement": "Creuse",
+    "Population": 118711
+  },
+  {
+    "Code departement": "30",
+    "departement": "Gard",
+    "Population": 748236
+  },
+  {
+    "Code departement": "31",
+    "departement": "Haute-Garonne",
+    "Population": 1388393
+  },
+  {
+    "Code departement": "43",
+    "departement": "Haute-Loire",
+    "Population": 227444
+  },
+  {
+    "Code departement": "72",
+    "departement": "Sarthe",
+    "Population": 566901
+  },
+  {
+    "Code departement": "46",
+    "departement": "Lot",
+    "Population": 171463
+  },
+  {
+    "Code departement": "83",
+    "departement": "Var",
+    "Population": 1071832
+  },
+  {
+    "Code departement": "89",
+    "departement": "Yonne",
+    "Population": 338303
+  },
+  {
+    "Code departement": "90",
+    "departement": "Territoire de Belfort",
+    "Population": 144479
+  }
+]

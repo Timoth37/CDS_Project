@@ -16,14 +16,14 @@ def generate_transac():
                 {'label': 'Par type de mutation', 'value': 'tbnom'}
             ],
             value='tbtol'),  
-            dcc.Loading(
-                dcc.Graph(id='transac_graph', className="graph", figure=transac('tbtol')),
-                parent_className="graph",
-                type="dot",
-                style={'width': '100%', 'margin': '20px auto'},
-                color = '#dcdcdc',
-                id='map_loading',  # Add an ID to the Loading component
-            )])
+        dcc.Loading(
+            dcc.Graph(id='transac_graph', className="graph", figure=transac('tbtol')),
+            parent_className="graph",
+            type="dot",
+            style={'width': '100%', 'margin': '20px auto'},
+            color = '#dcdcdc',
+            id='map_loading',  # Add an ID to the Loading component
+        )])
 
 @callback(
     Output('transac_graph', 'figure'),

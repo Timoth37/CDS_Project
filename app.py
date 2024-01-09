@@ -11,6 +11,8 @@ from search_layout import generate_search
 from prices_layout import generate_prices
 from maps_layout import generate_maps
 from overview_layout import generate_overview
+from correlation_layout import generate_corr
+from about_layout import generate_about
 
 # Mise en page du dashboard
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
@@ -53,7 +55,11 @@ def display_page(pathname):
     
     if pathname=='/maps':
         return generate_maps()
-
+    
+    if pathname=='/correlation':
+        return generate_corr()
+    if pathname=='/about':
+        return generate_about()
     else:
         return '404 Page Not Found'
 

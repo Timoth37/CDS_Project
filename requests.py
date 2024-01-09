@@ -34,7 +34,8 @@ def global_infos():
         {"$match": {"Valeur fonciere": {"$exists": True, "$ne": float('NaN')}, 
                     "Surface terrain": {"$exists": True, "$ne": float('NaN')}, 
                     "Surface reelle bati": {"$exists": True, "$ne": float('NaN')},
-                    "prixmcarre terr": {"$exists": True, "$ne": float('NaN')}}},
+                    "prixmcarre terr": {"$exists": True, "$ne": float('NaN')}},
+                    },
         {"$group": {"_id": None, 
                     "mean_value": {"$avg": "$Valeur fonciere"}, 
                     "max_value": {"$max": "$Valeur fonciere"},
@@ -42,10 +43,42 @@ def global_infos():
                     "mean_surface_liveable": {"$avg": "$Surface reelle bati"},
                     "number_transac" : {"$sum" : 1}}}
     ]
-
     result = list(collection.aggregate(pipeline))
-    result = result[0]
-    return result if result else None
+    mainStat = result[0]
+    pipeline = [
+        {"$group": {"_id": "$Type local", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+        {"$limit": 1}
+    ]
+    result = list(collection.aggregate(pipeline))
+    mainStat['main_local'] = result[0]['_id']
+
+    pipeline = [
+        {"$project": {
+            "month": {"$month": "$Date mutation"}
+        }},
+        {"$group": {
+            "_id": "$month",
+            "count": {"$sum": 1}
+        }},
+        {"$sort": {"count": -1}},
+        {"$limit": 1}
+    ]
+    result = list(collection.aggregate(pipeline))
+    mainStat['main_month'] = result[0]['_id']
+
+    pipeline = [
+        {"$match": {
+            "Nombre pieces principales": {"$exists": True, "$nin": [float('nan'), 0]}
+        }},
+        {"$group": {
+            "_id": None,
+            "mean_rooms": {"$avg": "$Nombre pieces principales"}
+        }}
+    ]
+    result = list(collection.aggregate(pipeline))
+    mainStat['mean_rooms'] = result[0]['mean_rooms']
+    return mainStat
 
 def full_search(type, rooms, depart, commune, price, surface):
     pipeline = []
@@ -110,7 +143,7 @@ def transac(arg):
         pipeline = [
                     {"$group": {"_id": "$Code departement", "count": {"$sum": 1}}}
                 ]
-        return bar_chart("Nombre de transactions en fonction du département", pipeline, "_id", "count", "Department Code", "Transactions", "linear")
+        return bar_chart("Nombre de transactions en fonction du département", pipeline, "_id", "count", "Code département", "Transactions", "linear")
 
     if arg == 'tbrop':
         pipeline = [
@@ -120,13 +153,13 @@ def transac(arg):
                     "categorie_prix": {
                         "$switch": {
                             "branches": [
-                                {"case": {"$lte": ["$Valeur fonciere", 10000]}, "then": "0-10000"},
-                                {"case": {"$lte": ["$Valeur fonciere", 50000]}, "then": "10001-50000"},
-                                {"case": {"$lte": ["$Valeur fonciere", 100000]}, "then": "50001-100000"},
-                                {"case": {"$lte": ["$Valeur fonciere", 200000]}, "then": "100001-200000"},
-                                {"case": {"$lte": ["$Valeur fonciere", 500000]}, "then": "200001-500000"},
-                                {"case": {"$lte": ["$Valeur fonciere", 1000000]}, "then": "500001-1000000"},
-                                {"case": {"$gt": ["$Valeur fonciere", 1000000]}, "then": "1000000+"}
+                                {"case": {"$lte": ["$Valeur fonciere", 10000]}, "then": "0-10 000€"},
+                                {"case": {"$lte": ["$Valeur fonciere", 50000]}, "then": "10 001-50 000€"},
+                                {"case": {"$lte": ["$Valeur fonciere", 100000]}, "then": "50 001-100 000€"},
+                                {"case": {"$lte": ["$Valeur fonciere", 200000]}, "then": "100 001-200 000€"},
+                                {"case": {"$lte": ["$Valeur fonciere", 500000]}, "then": "200 001-500 000€"},
+                                {"case": {"$lte": ["$Valeur fonciere", 1000000]}, "then": "500 001-1 000 000€"},
+                                {"case": {"$gt": ["$Valeur fonciere", 1000000]}, "then": ">1 000 000€"}
                             ],
                             "default": "Unknown"
                         }
@@ -135,13 +168,13 @@ def transac(arg):
             },
             {"$group": {"_id": "$categorie_prix", "count": {"$sum": 1}}}
         ]
-        return pie_chart("Nombre de transactions en fonction du prix", pipeline, "_id", "count", "Price Category", "Transactions")
+        return pie_chart("Nombre de transactions en fonction du prix", pipeline, "_id", "count", "Prix", "Transactions")
 
     if arg == 'tbnom':
         pipeline = [
                     {"$group": {"_id": "$Nature mutation", "count": {"$sum": 1}}}
                 ]
-        return bar_chart("Nombre de transactions en fonction de la nature de la mutation", pipeline, "_id", "count", "Mutation Nature", "Transactions", "log")
+        return bar_chart("Nombre de transactions en fonction de la nature de la mutation", pipeline, "_id", "count", "Nature mutation", "Transactions", "log")
 
 def prices(arg, price_per_sqm):
     if price_per_sqm:
@@ -191,7 +224,7 @@ def prices(arg, price_per_sqm):
              "Nombre pieces principales" : {"$gt" : 0, "$lt" : 7}}},
             {"$group": {"_id": "$Nombre pieces principales", "average_value": {"$avg": "$"+yaxis}}}
         ]
-        return bar_chart(ylabel + " en fonction du type de voie", pipeline, "_id", "average_value", "Type de voie",ylabel, "linear")
+        return bar_chart(ylabel + " en fonction du nombre de pièces", pipeline, "_id", "average_value", "Nombre de pièces",ylabel, "linear")
 
 
     result = list(collection.aggregate(pipeline))
@@ -278,8 +311,34 @@ def maps(arg, depart):
 
     return fig
 
+def correlation(arg):
+    if arg == 'price':
+        pop = pd.DataFrame(json.load(open('C:/Users/galla/Desktop/A5/CDS/Project/datas/json/pop.json', encoding='utf-8')))
+        pipeline = [
+            {"$match": {"prixmcarre bati": {"$exists": True, "$nin": [float('NaN'), float('Infinity')], "$lte" : 20000}}},
+            {"$group": {"_id": "$Code departement", "Prix m² habitable": {"$avg": "$prixmcarre bati"}}}
+        ]
+        result = list(collection.aggregate(pipeline))
+        price = pd.DataFrame(result)
+        merged_df = pd.merge(price, pop, left_on='_id', right_on="Code departement", how='inner')
+        merged_df = merged_df.sort_values(by='Population', ascending=False)    
+        return scatter_plot("Prix du m² en fonction de la démographie, par département",merged_df, 'Code departement', 'Prix m² habitable', 'Population')
+
+    if arg == 'surface':
+            pop = pd.DataFrame(json.load(open('C:/Users/galla/Desktop/A5/CDS/Project/datas/json/pop.json', encoding='utf-8')))
+            pipeline = [
+                {"$match": {"Surface reelle bati": {"$exists": True, "$nin": [float('NaN'), float('Infinity')], "$lte" : 20000}}},
+                {"$group": {"_id": "$Code departement", "Surface habitable": {"$avg": "$Surface reelle bati"}}}
+            ]
+            result = list(collection.aggregate(pipeline))
+            price = pd.DataFrame(result)
+            merged_df = pd.merge(price, pop, left_on='_id', right_on="Code departement", how='inner')
+            merged_df = merged_df.sort_values(by='Population', ascending=False) 
+            return scatter_3d_plot("Surface habitable en fonction de la démographie, par département",merged_df, 'Code departement', 'Surface habitable', 'Population')
+
+
 def bar_chart(title, pipeline, xAxis, yAxis, xLabel, yLabel, type):
-    color_scale = [[0, '#63318b'], [1, '#e4c3ff']]  # Exemple de l'échelle, du vert au rouge
+    color_scale = [[0, '#63318b'], [1, '#e4c3ff']] 
     result = list(collection.aggregate(pipeline))
     data = pd.DataFrame(result)
     data = data.sort_values(by=yAxis, ascending=False)
@@ -301,10 +360,10 @@ def bar_chart(title, pipeline, xAxis, yAxis, xLabel, yLabel, type):
     return fig
 
 def pie_chart(title, pipeline, xAxis, yAxis, xLabel, yLabel):
+
     result = list(collection.aggregate(pipeline))
     data = pd.DataFrame(result)
     data = data.sort_values(by='count', ascending=False)
-    print()
     fig = px.pie(data, 
                 values=yAxis, 
                 names=xAxis, 
@@ -319,4 +378,42 @@ def pie_chart(title, pipeline, xAxis, yAxis, xLabel, yLabel):
         plot_bgcolor='#1d232c',
         font=dict(color='#83868b')
     )
+    return fig
+
+def scatter_plot(title, data, xaxis, yaxis, size):       
+    color_scale = [[0, '#63318b'], [1, '#e4c3ff']] 
+    fig = px.scatter(data, x=xaxis, y=yaxis,
+                title = title,
+                color=data[yaxis],
+                color_continuous_scale=color_scale,
+                size=size
+            )
+
+    fig.update_layout(
+        paper_bgcolor='#1d232c',
+        plot_bgcolor='#1d232c',
+        font=dict(color='#83868b'),
+        yaxis=dict(showgrid=False),
+        xaxis=dict(showgrid=False)
+    )
+    fig.update_traces(marker_line_color="rgba(0,0,0,0)")
+    return fig
+    
+def scatter_3d_plot(title, data, xaxis, yaxis, size):
+    color_scale = [[0, '#63318b'], [1, '#e4c3ff']] 
+    fig = px.scatter_3d(data, x=xaxis, y=yaxis, z=size,
+                title = title,
+                color=data[yaxis],
+                color_continuous_scale=color_scale,
+                size=size
+            )
+
+    fig.update_layout(
+        paper_bgcolor='#1d232c',
+        plot_bgcolor='#1d232c',
+        font=dict(color='#83868b'),
+        yaxis=dict(showgrid=False),
+        xaxis=dict(showgrid=False)
+    )
+    fig.update_traces(marker_line_color="rgba(0,0,0,0)")
     return fig

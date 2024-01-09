@@ -22,7 +22,7 @@ def populate_VF(file_path, mongo_uri, database_name, collection_name):
     client.close()
 #populate_VF("C:/Users/galla/Downloads/valeursfoncieres-2021.txt", mongo_uri, database_name, 'VF')
 
-def populate_DEPART(file_path, mongo_uri, database_name, collection_name):
+def populate_COMMUNES(file_path, mongo_uri, database_name, collection_name):
 
     with open(file_path, 'r', encoding='utf-8') as file:
         data = json.load(file)

@@ -2,15 +2,15 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 20px auto;
+    margin: 50px auto;
     width: 100%;
-    height: 10%;
+    height: 30%;
 }
 
 .bubble {
     padding: 15px;
     width: 20%;
-    height: 80px;
+    height: 150px;
     background: #1d232c;
     backdrop-filter: blur(6px);
     text-align: center;
@@ -30,11 +30,12 @@
   }
 
 .bubble_title{
-    font-size: 18px;
+    font-size: 20px;
     margin: 10px 0;
+    height: 40%;
 }
 
 .bubble_text{
-    font-size: 14px;
+    font-size: 16px;
     margin: 10px 0;
 }
