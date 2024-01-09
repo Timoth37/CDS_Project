@@ -20,7 +20,6 @@ def populate_VF(file_path, mongo_uri, database_name, collection_name):
     collection.insert_many(data)
 
     client.close()
-
 #populate_VF("C:/Users/galla/Downloads/valeursfoncieres-2021.txt", mongo_uri, database_name, 'VF')
 
 def populate_DEPART(file_path, mongo_uri, database_name, collection_name):
@@ -35,19 +34,6 @@ def populate_DEPART(file_path, mongo_uri, database_name, collection_name):
         
         client.close()
 #populate_DEPART("C:/Users/galla/Desktop/A5/CDS/Project/datas/json/france.json", mongo_uri, database_name, 'COMMUNES')
-
-
-def populate_GEO(departList, mongo_uri, database_name, collection_name):
-    client = MongoClient(mongo_uri)
-    db = client[database_name]
-    collection = db[collection_name]
-    
-    for i, j in departList.items():
-        with open('C:/Users/galla/Desktop/A5/CDS/Project/datas/geojson/'+i+'.geojson', 'r') as file:
-            data=json.load(file)
-            data['depart_id'] = i
-            collection.insert_one(data)
-
 
 departList = {
         "00" : "France",
@@ -154,6 +140,16 @@ departList = {
         "976": "Mayotte"
     }
 
+def populate_GEO(departList, mongo_uri, database_name, collection_name):
+    client = MongoClient(mongo_uri)
+    db = client[database_name]
+    collection = db[collection_name]
+    
+    for i, j in departList.items():
+        with open('C:/Users/galla/Desktop/A5/CDS/Project/datas/geojson/'+i+'.geojson', 'r') as file:
+            data=json.load(file)
+            data['depart_id'] = i
+            collection.insert_one(data)
 #populate_GEO(departList, mongo_uri, database_name, 'GEO')
 
 
@@ -187,25 +183,3 @@ def preprocess_data(df):
     df['prixmcarre terr'] = df['Valeur fonciere'] / df['Surface terrain']
 
     return df
-
-
-def clear_mongo_collection(mongo_uri, database_name, collection_name):
-    # Connexion à la base de données MongoDB
-    client = MongoClient(mongo_uri)
-
-    # Accès à la collection spécifiée
-    db = client[database_name]
-    collection = db[collection_name]
-
-    try:
-        # Supprimer tous les documents de la collection
-        result = collection.delete_many({})
-        print(f"La collection '{collection_name}' a été vidée. {result.deleted_count} documents supprimés.")
-    except Exception as e:
-        print(f"Erreur lors de la suppression des documents de la collection '{collection_name}': {e}")
-    finally:
-        # Fermer la connexion MongoDB
-        client.close()
-
-
-#clear_mongo_collection(mongo_uri, database_name, collection_name)
