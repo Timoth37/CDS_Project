@@ -13,7 +13,7 @@ client = MongoClient(mongo_uri)
 db = client[database_name]
 collection = db[collection_name]
 
-listCommunes = json.load(open('C:/Users/galla/Desktop/A5/CDS/Project/assets/json/france.json', encoding='utf-8'))
+#listCommunes = json.load(open('C:/Users/galla/Desktop/A5/CDS/Project/assets/json/france.json', encoding='utf-8'))
 
 
 def generate_discrete_color_sequence(num_colors):
@@ -22,13 +22,12 @@ def generate_discrete_color_sequence(num_colors):
     return [colors.label_rgb(j) for j in [colors.convert_to_RGB_255(i) for i in tuples]]
 
 def get_commune_name(communecode):
-    result = [element['properties']['libgeo'] for element in listCommunes if element['properties']["codgeo"]==communecode]
-    return result[0] if result else None
+    result = db['COMMUNES'].find_one({"codgeo": communecode})
+    return result['libgeo']
 
 def get_commune_list(departCode):
-    global listCommunes
-    result = [{"name" : element['properties']["libgeo"], "code" : element['properties']["codgeo"]} for element in sorted(listCommunes, key=lambda obj : obj['properties']['libgeo']) if str(element['properties']["dep"])==str(departCode)]
-    return result
+    test = list(db['COMMUNES'].find({"dep": departCode}))
+    return [{"name" : element["libgeo"], "code" : element["codgeo"]} for element in sorted(test, key=lambda obj : obj['libgeo'])]
 
 def global_infos():
     pipeline = [
@@ -200,7 +199,9 @@ def prices(arg, price_per_sqm):
     df_result = df_result.sort_values(by='average_value', ascending=False)    
 
 def maps(arg, depart):
-    geo = json.load(open('C:/Users/galla/Desktop/A5/CDS/Project/assets/geojson/'+depart+'.geojson'))
+    filtre = {"depart_id": depart}
+    projection = {"type": 1, "features": 1, "_id": 0}
+    geo =  db['GEO'].find_one(filtre, projection)
 
     if arg == 'price':
         if depart=="00" :

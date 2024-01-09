@@ -51,7 +51,7 @@ def update_graph(click_data):
     
 @callback(
     Output('france_map', 'figure'),
-    Output('detailed_map', 'figure'),
+    Output('depart_map', 'figure', allow_duplicate=True),
     Input('maps_dropdown', 'value'),
     prevent_initial_call=True
 )
