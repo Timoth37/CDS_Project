@@ -409,11 +409,15 @@ def scatter_3d_plot(title, data, xaxis, yaxis, size):
             )
 
     fig.update_layout(
-        paper_bgcolor='#1d232c',
+        scene=dict(
+            xaxis=dict(showgrid=False, backgroundcolor='#161b21'),
+            yaxis=dict(showgrid=False, backgroundcolor='#161b21'),
+            zaxis=dict(showgrid=False, backgroundcolor='#161b21'),
+            bgcolor='#1d232c'
+        ),
+        paper_bgcolor = '#1d232c',
         plot_bgcolor='#1d232c',
-        font=dict(color='#83868b'),
-        yaxis=dict(showgrid=False),
-        xaxis=dict(showgrid=False)
+        font=dict(color='#83868b')
     )
     fig.update_traces(marker_line_color="rgba(0,0,0,0)")
     return fig
