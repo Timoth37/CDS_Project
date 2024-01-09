@@ -189,9 +189,6 @@ def preprocess_data(df):
     return df
 
 
-
-
-
 def clear_mongo_collection(mongo_uri, database_name, collection_name):
     # Connexion à la base de données MongoDB
     client = MongoClient(mongo_uri)
