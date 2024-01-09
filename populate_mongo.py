@@ -6,6 +6,14 @@ from pymongo import MongoClient
 mongo_uri = "mongodb://localhost:27017"
 database_name = "CDS"
 
+def create_collections(mongo_uri, database_name):
+        client = MongoClient(mongo_uri)
+        db = client[database_name]
+        db.create_collection('VF')
+        db.create_collection('GEO')
+        db.create_collection('COMMUNES')
+
+create_collections(mongo_uri, database_name)
 
 def populate_VF(file_path, mongo_uri, database_name, collection_name):
     df = pd.read_csv(file_path, sep='|')
@@ -20,7 +28,7 @@ def populate_VF(file_path, mongo_uri, database_name, collection_name):
     collection.insert_many(data)
     create_indexes(collection, ['Valeur fonciere', 'Surface reelle bati', 'Nombre pieces principales','prixmcarre bati'])
     client.close()
-#populate_VF("C:/Users/galla/Downloads/valeursfoncieres-2021.txt", mongo_uri, database_name, 'VF')
+populate_VF("C:/Users/galla/Downloads/valeursfoncieres-2021.txt", mongo_uri, database_name, 'VF')
 
 def populate_COMMUNES(file_path, mongo_uri, database_name, collection_name):
 
@@ -33,7 +41,7 @@ def populate_COMMUNES(file_path, mongo_uri, database_name, collection_name):
         collection.insert_many(data)
         create_indexes(collection, ['codgeo', 'dep'])
         client.close()
-#populate_DEPART("C:/Users/galla/Desktop/A5/CDS/Project/datas/json/france.json", mongo_uri, database_name, 'COMMUNES')
+populate_COMMUNES("C:/Users/galla/Desktop/A5/CDS/Project/datas/json/france.json", mongo_uri, database_name, 'COMMUNES')
 
 departList = {
         "00" : "France",
@@ -152,15 +160,12 @@ def populate_GEO(departList, mongo_uri, database_name, collection_name):
             collection.insert_one(data)
 
     create_indexes(collection,['depart_id'])
-#populate_GEO(departList, mongo_uri, database_name, 'GEO')
+populate_GEO(departList, mongo_uri, database_name, 'GEO')
 
 
 def create_indexes(collection, list_attribute):
     for i in list_attribute:
         collection.create_index([(i, 1)])
-
-
-
 
 
 def preprocess_data(df):
