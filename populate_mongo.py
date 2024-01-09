@@ -34,7 +34,7 @@ def populate_DEPART(file_path, mongo_uri, database_name, collection_name):
         collection.insert_many(data)
         
         client.close()
-#populate_DEPART("C:/Users/galla/Desktop/A5/CDS/Project/assets/json/france.json", mongo_uri, database_name, 'COMMUNES')
+#populate_DEPART("C:/Users/galla/Desktop/A5/CDS/Project/datas/json/france.json", mongo_uri, database_name, 'COMMUNES')
 
 
 def populate_GEO(departList, mongo_uri, database_name, collection_name):
@@ -43,7 +43,7 @@ def populate_GEO(departList, mongo_uri, database_name, collection_name):
     collection = db[collection_name]
     
     for i, j in departList.items():
-        with open('C:/Users/galla/Desktop/A5/CDS/Project/assets/geojson/'+i+'.geojson', 'r') as file:
+        with open('C:/Users/galla/Desktop/A5/CDS/Project/datas/geojson/'+i+'.geojson', 'r') as file:
             data=json.load(file)
             data['depart_id'] = i
             collection.insert_one(data)
