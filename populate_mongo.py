@@ -6,14 +6,49 @@ from pymongo import MongoClient
 mongo_uri = "mongodb://localhost:27017"
 database_name = "CDS"
 
-def create_collections(mongo_uri, database_name):
+def create_DB(mongo_uri, database_name):
         client = MongoClient(mongo_uri)
+        db = client['CDS']
         db = client[database_name]
         db.create_collection('VF')
         db.create_collection('GEO')
         db.create_collection('COMMUNES')
+create_DB(mongo_uri, database_name)
 
-create_collections(mongo_uri, database_name)
+def preprocess_data(df):
+    # Garder seulement les colonnes spécifiées
+    columns_to_keep = ['Date mutation', 'Nature mutation', 'Valeur fonciere', 'Type de voie',
+                        'Code postal', 'Commune', 'Code departement', 'Code commune',
+                        'Nombre de lots', 'Type local', 'Surface reelle bati',
+                        'Nombre pieces principales', 'Surface terrain']
+    df = df[columns_to_keep]
+
+    # Convertir la colonne 'Date mutation' en datetime et Valeur fonciere en float et Type Local en string
+    df['Date mutation'] = pd.to_datetime(df['Date mutation'], format="%d/%m/%Y", errors='coerce')
+    df['Valeur fonciere'] = df['Valeur fonciere'].apply(lambda x: str(x).replace(',','.'))
+    df['Valeur fonciere']=df['Valeur fonciere'].astype(float)
+    
+    df['Type local'] = df['Type local'].astype(str)
+
+    # Supprimer les doublons de propriétés
+    df = df[df['Type local'] != str('nan')]
+    df = df[df['Type local'] != 'Dépendance']
+    df = df.drop_duplicates(subset=['Date mutation', 'Nature mutation', 'Valeur fonciere', 'Commune', 'Code postal'], keep='first').reset_index(drop=True)
+
+    # Traitement sur la colonne Code Commune
+    df['Code departement'] = df['Code departement'].apply(lambda x: str(x).zfill(2))
+    df['Code commune'] = df['Code commune'].apply(lambda x: str(x).zfill(3))
+    df['Code commune total'] = df['Code departement'] + df['Code commune']
+
+    # Créer deux nouvelles colonnes
+    df['prixmcarre bati'] = df['Valeur fonciere'] / df['Surface reelle bati']
+    df['prixmcarre terr'] = df['Valeur fonciere'] / df['Surface terrain']
+
+    return df
+
+def create_indexes(collection, list_attribute):
+    for i in list_attribute:
+        collection.create_index([(i, 1)])
 
 def populate_VF(file_path, mongo_uri, database_name, collection_name):
     df = pd.read_csv(file_path, sep='|')
@@ -163,38 +198,5 @@ def populate_GEO(departList, mongo_uri, database_name, collection_name):
 populate_GEO(departList, mongo_uri, database_name, 'GEO')
 
 
-def create_indexes(collection, list_attribute):
-    for i in list_attribute:
-        collection.create_index([(i, 1)])
 
 
-def preprocess_data(df):
-    # Garder seulement les colonnes spécifiées
-    columns_to_keep = ['Date mutation', 'Nature mutation', 'Valeur fonciere', 'Type de voie',
-                        'Code postal', 'Commune', 'Code departement', 'Code commune',
-                        'Nombre de lots', 'Type local', 'Surface reelle bati',
-                        'Nombre pieces principales', 'Surface terrain']
-    df = df[columns_to_keep]
-
-    # Convertir la colonne 'Date mutation' en datetime et Valeur fonciere en float et Type Local en string
-    df['Date mutation'] = pd.to_datetime(df['Date mutation'], format="%d/%m/%Y", errors='coerce')
-    df['Valeur fonciere'] = df['Valeur fonciere'].apply(lambda x: str(x).replace(',','.'))
-    df['Valeur fonciere']=df['Valeur fonciere'].astype(float)
-    
-    df['Type local'] = df['Type local'].astype(str)
-
-    # Supprimer les doublons de propriétés
-    df = df[df['Type local'] != str('nan')]
-    df = df[df['Type local'] != 'Dépendance']
-    df = df.drop_duplicates(subset=['Date mutation', 'Nature mutation', 'Valeur fonciere', 'Commune', 'Code postal'], keep='first').reset_index(drop=True)
-
-    # Traitement sur la colonne Code Commune
-    df['Code departement'] = df['Code departement'].apply(lambda x: str(x).zfill(2))
-    df['Code commune'] = df['Code commune'].apply(lambda x: str(x).zfill(3))
-    df['Code commune total'] = df['Code departement'] + df['Code commune']
-
-    # Créer deux nouvelles colonnes
-    df['prixmcarre bati'] = df['Valeur fonciere'] / df['Surface reelle bati']
-    df['prixmcarre terr'] = df['Valeur fonciere'] / df['Surface terrain']
-
-    return df
